@@ -1,0 +1,47 @@
+server:
+  port: 8071
+spring:
+  application:
+    name: "configserver"
+  profiles:
+     active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: "classpath:/config"
+        git:
+          uri: "https://github.com/GAUTHAM09012004/eazybytes-config"
+          default-label: main
+          timeout: 5
+          clone-on-start: true
+          force-pull: true
+  rabbitmq:
+    host: "localhost"
+    port: 5672
+    username: "guest"
+    password: "guest"
+encrypt:
+  key: "45D81EC1EF61DF9AD8D3E5BB397F9"   # This is the key used to encrypt the passwords in the git repository
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
+      enabled: true
+  endpoint:
+    health:
+      probes:
+        enabled: true
+    shutdown:
+      enabled: true
+  info:
+    env:
+      enabled: true
+
+

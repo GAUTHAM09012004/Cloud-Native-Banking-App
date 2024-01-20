@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/cards/pom.xml" />
+        <option value="$PROJECT_DIR$/loans/pom.xml" />
+        <option value="$PROJECT_DIR$/accounts/pom.xml" />
+        <option value="$USER_HOME$/Downloads/Micro/microservices-main/section6/v2-spring-cloud-config/configserver/pom.xml" />
+        <option value="$PROJECT_DIR$/configserver/pom.xml" />
+        <option value="$USER_HOME$/Downloads/Micro/microservices-main/section8/eurekaserver/pom.xml" />
+        <option value="$USER_HOME$/Downloads/Micro/microservices-main/section9/eurekaserver/pom.xml" />
+        <option value="$PROJECT_DIR$/eurekaserver/pom.xml" />
+        <option value="$USER_HOME$/Downloads/Micro/microservices-main/section9/gatewayserver/pom.xml" />
+        <option value="$USER_HOME$/Downloads/Micro/microservices-main/section_10/gatewayserver/pom.xml" />
+        <option value="$PROJECT_DIR$/gatewayserver/pom.xml" />
+        <option value="$PROJECT_DIR$/message/pom.xml" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_18" default="true" project-jdk-name="18" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>
