@@ -67,20 +67,16 @@ public class AccountsController {
     @PutMapping("/update")
     public ResponseEntity<ResponseDto> updateAccountDetails(
             @Valid @RequestBody AccountsDto accountsDto,
-            @RequestParam(required = false) Long AccountId,
             @Parameter(description = "Mobile number of the account holder. Must be exactly 10 digits.")
             @RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits") String mobileNumber) {
         iAccountsService.updateAccount(accountsDto, mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
     }
 
-    @Operation(summary = "Delete an account", description = "Deletes an account using the provided mobile number.")
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> deleteCustomerDetails(
-            @Valid @RequestBody AccountsDto accountsDto,
-            @RequestParam(required = false) Long AccountId,
-            @Parameter(description = "Mobile number of the account holder. Must be exactly 10 digits.")
             @RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits") String mobileNumber) {
+        logger.info("Received delete request for mobileNumber: {}", mobileNumber);
         iAccountsService.deleteAccount(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
     }

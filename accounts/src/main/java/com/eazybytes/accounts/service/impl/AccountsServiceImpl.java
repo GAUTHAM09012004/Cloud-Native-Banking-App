@@ -5,7 +5,6 @@ import com.eazybytes.accounts.dto.AccountsDto;
 import com.eazybytes.accounts.dto.AccountsMsgDto;
 import com.eazybytes.accounts.entity.Accounts;
 import com.eazybytes.accounts.entity.Customer;
-import com.eazybytes.accounts.exception.CustomerAlreadyExistsException;
 import com.eazybytes.accounts.exception.ResourceNotFoundException;
 import com.eazybytes.accounts.repository.AccountsRepository;
 import com.eazybytes.accounts.repository.CustomerRepository;
@@ -15,9 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -70,6 +70,7 @@ public class AccountsServiceImpl implements IAccountsService
     }
 
     @Override
+    @Transactional
     public void updateAccount(AccountsDto accountsDto, String mobileNumber) {
 
         Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
@@ -83,14 +84,25 @@ public class AccountsServiceImpl implements IAccountsService
         accountsRepository.save(accounts);
     }
 
+    @Transactional
     @Override
     public void deleteAccount(String mobileNumber) {
-
-        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
-        );
-        Accounts accounts = accountsRepository.findByCustomer(customer).orElseThrow(
-                () -> new ResourceNotFoundException("Accounts", "MobileNumber", mobileNumber));
+        log.info("Starting deleteAccount for mobileNumber: {}", mobileNumber);
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber)
+                .orElseThrow(() -> {
+                    log.error("Customer not found for mobileNumber: {}", mobileNumber);
+                    return new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber);
+                });
+        log.info("Customer found: {}", customer.getName()); //
+        Accounts accounts = accountsRepository.findByCustomer(customer)
+                .orElseThrow(() -> {
+                    log.error("Account not found for customer with mobileNumber: {}", mobileNumber);
+                    return new ResourceNotFoundException("Accounts", "MobileNumber", mobileNumber);
+                });
+        log.info("Account found with ID: {}", accounts.getAccountId());
         accountsRepository.delete(accounts);
+        accountsRepository.flush();
+        log.info("Successfully deleted account for mobileNumber: {}", mobileNumber);
     }
+
 }

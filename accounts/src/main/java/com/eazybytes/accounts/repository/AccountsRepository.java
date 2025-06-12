@@ -11,9 +11,5 @@ import java.util.Optional;
 
 @Repository
 public interface AccountsRepository extends JpaRepository<Accounts, Long> {
-
         Optional<Accounts> findByCustomer(Customer customer);
-        @Transactional
-        @Modifying
-        void deleteByCustomer(Customer customer);
 }
