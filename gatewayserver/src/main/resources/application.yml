@@ -69,8 +69,7 @@ resilience4j.bulkhead:
   instances:
     BULKHEAD_SERVICE:
       maxConcurrentCalls: 10
-      max-wait-duration:
-        nanos: 100
+      max-wait-duration: 100ms
 
 
 
