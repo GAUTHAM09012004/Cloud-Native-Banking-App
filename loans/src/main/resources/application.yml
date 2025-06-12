@@ -1,9 +1,9 @@
 server:
-  port: 8090
+  port: 9000
 
 spring:
   application:
-    name: "cards"
+    name: "loans"
   profiles:
     active: qa
   datasource:
@@ -51,12 +51,36 @@ eureka:
 
 info:
   app:
-    name: "cards"
-    description: "Cards Microservice"
+    name: "loans"
+    description: "Loans Microservice"
     version: "1.0"
 
 logging:
   level:
     com:
       eazybytes:
-        cards: DEBUG
+        loans: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
+
+resilience4j:
+  retry:
+    configs:
+      default:
+        max-attempts: 3
+        wait-duration: 500
+        enable-exponential-backoff: true
+        exponential-backoff-multiplier: 2
+
+resilience4j.ratelimiter:
+  configs:
+    default:
+      timeoutDuration: 1000
+      limitRefreshPeriod: 5000
+      limitForPeriod: 1

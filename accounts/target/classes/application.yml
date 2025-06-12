@@ -1,20 +1,18 @@
 server:
   port: 8080
+
 spring:
   application:
     name: "accounts"
   profiles:
     active: qa
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-  h2:
-    console:
-      enabled: true
+    url: jdbc:mysql://localhost:3307/mydb
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: springstudent
+    password: Chicken@69
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -55,6 +53,7 @@ management:
   info:
     env:
       enabled: true
+
 eureka:
   instance:
     preferIpAddress: true
@@ -99,13 +98,3 @@ resilience4j.ratelimiter:
       timeoutDuration: 1000
       limitRefreshPeriod: 5000
       limitForPeriod: 1
-
-
-
-
-
-
-
-
-
-

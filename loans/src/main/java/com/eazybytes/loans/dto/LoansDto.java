@@ -10,6 +10,8 @@ import lombok.*;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class LoansDto {
 
     @NotEmpty(message = "Mobile Number can not be a null or empty")

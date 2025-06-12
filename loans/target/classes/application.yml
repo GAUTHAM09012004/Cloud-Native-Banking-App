@@ -1,20 +1,18 @@
 server:
   port: 9000
+
 spring:
   application:
     name: "loans"
   profiles:
     active: qa
   datasource:
-    url: jdbc:h2:mem:testdb
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ''
-  h2:
-    console:
-      enabled: true
+    url: jdbc:mysql://localhost:3307/mydb
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: springstudent
+    password: Chicken@69
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -22,7 +20,7 @@ spring:
     import: "optional:configserver:http://configserver:8071"
 
   rabbitmq:
-    host: "rabbitmq"
+    host: "localhost"
     port: 5672
     username: "guest"
     password: "guest"
@@ -41,6 +39,7 @@ management:
     health:
       probes:
         enabled: true
+
 eureka:
   instance:
     preferIpAddress: true
@@ -48,12 +47,12 @@ eureka:
     fetchRegistry: true
     registerWithEureka: true
     serviceUrl:
-      defaultZone: http://eureka:8070/eureka/
+      defaultZone: http://localhost:8070/eureka/
 
 info:
   app:
     name: "loans"
-    description: "Loans Microservices"
+    description: "Loans Microservice"
     version: "1.0"
 
 logging:
