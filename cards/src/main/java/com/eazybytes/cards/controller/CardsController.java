@@ -4,6 +4,8 @@ import com.eazybytes.cards.constants.CardsConstants;
 import com.eazybytes.cards.dto.CardsContactInfoDto;
 import com.eazybytes.cards.dto.CardsDto;
 import com.eazybytes.cards.dto.ResponseDto;
+import com.eazybytes.cards.entity.Cards;
+import com.eazybytes.cards.exception.ResourceNotFoundException;
 import com.eazybytes.cards.service.ICardsService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
@@ -11,8 +13,8 @@ import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,15 +61,13 @@ public class CardsController {
     @Retry(name = "detailsForCardSupport")
     @RateLimiter(name = "detailsForCardSupport")
     public ResponseEntity<CardsDto> fetchCardDetails(
-            @Parameter(description = "Correlation ID for distributed tracing") @RequestHeader("eazybank-correlation-id") String correlationId,
             @Parameter(description = "Mobile number of the customer. Must be exactly 10 digits.")
             @RequestParam @Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits") String mobileNumber) {
-        logger.debug("Correlation id found: {}", correlationId);
         CardsDto cards = iCardsService.fetchCard(mobileNumber);
         return ResponseEntity.status(HttpStatus.OK).body(cards);
     }
 
-    public ResponseEntity<CardsDto> fallbackFetchCardDetails(String correlationId, String mobileNumber, Throwable throwable) {
+    public ResponseEntity<CardsDto> fallbackFetchCardDetails(String mobileNumber, Throwable throwable) {
         logger.error("Fallback method executed due to: {}", throwable.toString());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
@@ -97,6 +97,18 @@ public class CardsController {
                 .status(HttpStatus.OK)
                 .body(new ResponseDto(CardsConstants.STATUS_200, "Amount withdrawn successfully"));
     }
+
+    @Operation(summary = "Update card details", description = "Updates the card details for the provided mobile number.")
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto> updateCardDetails(
+            @Parameter(description = "Card details to be updated") @RequestBody @Valid CardsDto cardsDto) {
+
+        iCardsService.updateCard(cardsDto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(CardsConstants.STATUS_200, "Card details updated successfully"));
+    }
+
 
     @Operation(summary = "Delete card details", description = "Deletes the card linked to the provided mobile number.")
     @DeleteMapping("/delete")

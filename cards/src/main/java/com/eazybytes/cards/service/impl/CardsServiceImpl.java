@@ -65,6 +65,20 @@ public class CardsServiceImpl implements ICardsService {
     }
 
     @Override
+    public void updateCard(CardsDto cardsDto) {
+        Cards existingCard = cardsRepository.findByMobileNumber(cardsDto.getMobileNumber()).orElseThrow(
+                () -> new ResourceNotFoundException("Card", "mobileNumber", cardsDto.getMobileNumber())
+        );
+
+        existingCard.setCardType(cardsDto.getCardType());
+        existingCard.setTotalLimit(cardsDto.getTotalLimit());
+        existingCard.setAmountUsed(cardsDto.getAmountUsed());
+        existingCard.setAvailableAmount(cardsDto.getAvailableAmount());
+
+        cardsRepository.save(existingCard);
+    }
+
+    @Override
     public void withdrawMoney(String mobileNumber, double amount) {
         Cards cards = cardsRepository.findByMobileNumber(mobileNumber).orElseThrow(
                 () -> new ResourceNotFoundException("Card", "mobileNumber", mobileNumber)

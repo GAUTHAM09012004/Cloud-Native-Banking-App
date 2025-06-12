@@ -9,6 +9,7 @@ public final class LoansConstants {
     }
 
     public static final String STATUS_503 = "503";
+    public static final String MESSAGE_200_UPDATE ="Loan updated successfully";
     public static final String MESSAGE_503 = "Service temporarily unavailable. Please try again later.";
     public static final String  HOME_LOAN = "Home Loan";
     public static final int  NEW_LOAN_LIMIT = 1_00_000;

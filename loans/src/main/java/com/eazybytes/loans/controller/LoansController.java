@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping(path = "/api", produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(path = "/loans/api", produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 @Validated
 @Tag(name = "Loans API", description = "APIs for managing loan accounts and transactions")
@@ -58,20 +58,17 @@ public class LoansController {
     @TimeLimiter(name = "fetchLoanDetailsTL")
     @GetMapping("/fetch")
     public CompletableFuture<ResponseEntity<LoansDto>> fetchLoanDetails(
-            @Parameter(description = "Correlation ID for distributed tracing")
-            @RequestHeader("eazybank-correlation-id") String correlationId,
             @Parameter(description = "Mobile number of the customer. Must be exactly 10 digits.")
             @RequestParam @Pattern(regexp = "^[0-9]{10}$", message = "Mobile number must be 10 digits")
             String mobileNumber) {
 
-        logger.debug("Correlation id found: {}", correlationId);
         return CompletableFuture.supplyAsync(() -> {
             LoansDto loansDto = iLoansService.fetchLoan(mobileNumber);
             return ResponseEntity.ok(loansDto);
         });
     }
 
-    private CompletableFuture<ResponseEntity<LoansDto>> fetchLoanDetailsFallback(String correlationId, String mobileNumber, Throwable throwable) {
+    private CompletableFuture<ResponseEntity<LoansDto>> fetchLoanDetailsFallback(String mobileNumber, Throwable throwable) {
         logger.error("Fallback method invoked for fetchLoanDetails due to exception: {}", throwable.toString());
         LoansDto fallbackDto = new LoansDto();
         return CompletableFuture.completedFuture(ResponseEntity
@@ -97,6 +94,15 @@ public class LoansController {
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(LoansConstants.STATUS_417, LoansConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @Operation(summary = "Update loan", description = "Updates the details of an existing loan.")
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDto> updateLoan(@RequestBody LoansDto loansDto) {
+        iLoansService.updateLoan(loansDto);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto(LoansConstants.STATUS_200, LoansConstants.MESSAGE_200_UPDATE));
     }
 
     private ResponseEntity<ResponseDto> deleteLoanDetailsFallback(String mobileNumber, Throwable throwable) {

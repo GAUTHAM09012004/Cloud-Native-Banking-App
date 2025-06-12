@@ -11,6 +11,8 @@ public interface ICardsService {
 
     void depositMoney(String mobileNumber, double amount);
 
+    void updateCard(CardsDto cardsDto);
+
     void withdrawMoney(String mobileNumber, double amount);
 
     boolean deleteCard(String mobileNumber);

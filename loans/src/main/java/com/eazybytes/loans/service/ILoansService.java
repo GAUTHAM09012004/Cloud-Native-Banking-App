@@ -10,6 +10,8 @@ public interface ILoansService {
 
     LoansDto fetchLoan(String mobileNumber);
 
+    void updateLoan(LoansDto loansDto);
+
     int getOutstandingAmount(String mobileNumber);
 
     void makePayment(String mobileNumber, int amount);
