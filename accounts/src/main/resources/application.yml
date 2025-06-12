@@ -5,7 +5,7 @@ spring:
   application:
     name: "accounts"
   profiles:
-    active: qa
+    active: default
   datasource:
     url: jdbc:mysql://localhost:3307/mydb
     driverClassName: com.mysql.cj.jdbc.Driver

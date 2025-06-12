@@ -9,13 +9,18 @@
         <outputRelativeToContentRoot value="true" />
         <module name="eurekaserver" />
         <module name="gatewayserver" />
+        <module name="notification" />
         <module name="cards" />
         <module name="loans" />
         <module name="configserver" />
         <module name="accounts" />
-        <module name="message" />
+        <module name="transactions" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="loans (1)" target="17" />
+      <module name="loans (2)" target="17" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -25,7 +30,10 @@
       <module name="eurekaserver" options="-parameters" />
       <module name="gatewayserver" options="-parameters" />
       <module name="loans" options="-parameters" />
-      <module name="message" options="-parameters" />
+      <module name="loans (1)" options="-parameters" />
+      <module name="loans (2)" options="-parameters" />
+      <module name="notification" options="" />
+      <module name="transactions" options="-parameters" />
     </option>
   </component>
 </project>

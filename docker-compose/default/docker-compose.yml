@@ -129,6 +129,50 @@ services:
     networks:
       - gautham-network
 
+  transactions:
+    image: "gautham/transactions:s1"
+    container_name: transactions
+    ports:
+      - "9100:9100"
+    depends_on:
+      configserver:
+        condition: service_started
+      eurekaserver:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    environment:
+      SPRING_APPLICATION_NAME: "transactions"
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    networks:
+      - gautham-network
+
+  messaging:
+    image: "gautham/messaging:s1"
+    container_name: messaging
+    ports:
+      - "9500:9500"
+    depends_on:
+      configserver:
+        condition: service_started
+      eurekaserver:
+        condition: service_started
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    environment:
+      SPRING_APPLICATION_NAME: "messaging"
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071/
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka/
+    networks:
+      - gautham-network
+
   gatewayserver:
     image: "gautham/gatewayserver:s1"
     container_name: gatewayserver
@@ -142,6 +186,10 @@ services:
       cards:
         condition: service_started
       loans:
+        condition: service_started
+      transactions:
+        condition: service_started
+      messaging:
         condition: service_started
       eurekaserver:
         condition: service_started

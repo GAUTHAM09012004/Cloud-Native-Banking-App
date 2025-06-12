@@ -1,11 +1,11 @@
 server:
-  port: 8090
+  port: 9003
 
 spring:
   application:
-    name: "cards"
+    name: "transactions"
   profiles:
-    active: default
+    active: qa
   datasource:
     url: jdbc:mysql://localhost:3307/mydb
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -51,18 +51,15 @@ eureka:
 
 info:
   app:
-    name: "cards"
-    description: "Cards Microservice"
+    name: "transactions"
+    description: "Transactions Microservice"
     version: "1.0"
-  build:
-    version: "1.0.0"
-
 
 logging:
   level:
     com:
       eazybytes:
-        cards: DEBUG
+        transactions: DEBUG
 
 resilience4j.circuitbreaker:
   configs:
@@ -87,4 +84,3 @@ resilience4j.ratelimiter:
       timeoutDuration: 1000
       limitRefreshPeriod: 5000
       limitForPeriod: 1
-
