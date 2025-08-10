@@ -7,7 +7,7 @@ This project demonstrates a Microservices-based architecture using Spring Boot, 
 - Multiple microservices (Accounts, Cards, Loans, Transactions, Notifications)
 - Centralized Configuration Management via Config Server
 - Service Discovery using Eureka Server
-- API Gateway for routing, security, and rate limiting
+- API Gateway Server for routing, security, and rate limiting
 - Asynchronous Communication with RabbitMQ
 - Caching using Redis
 - Authentication & Authorization using Keycloak (OIDC)
